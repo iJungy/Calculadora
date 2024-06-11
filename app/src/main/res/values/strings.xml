@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Calculadora</string>
+    <string name="text_nombre">Nombre</string>
+    <string name="text_correo">Correo</string>
+    <string name="text_sitio_web">Sitio Web</string>
+    <string name="text_sitio_phone">Contacto</string>
+    <string name="text_location">Ubicacion</string>
+    <string name="text_show_location">Mostrar Mapa</string>
+    <string name="text_configuration">Habilitar Ubicacion</string>
+    <string name="text_show_confi">Enable Configuration</string>
+    <string name="mm_modificar_info">Modificar Info.</string>
+    <string name="txt_lati">Latitud</string>
+    <string name="txt_lon">Longitud</string>
+    <string name="k_name">k_name</string>
+    <string name="k_email">k_email</string>
+    <string name="k_web">k_web</string>
+    <string name="k_phone">k_phone</string>
+    <string name="k_lat">k_lat</string>
+    <string name="k_lon">k_lon</string>
+    <string name="k_image">R_image</string>
+    <string name="msn_campo_obligatorio">Campo Obligatorio\n</string>
+    <string name="msn_campo_name">El campo no puede estar vacio.</string>
+    <string name="msn_campo_web">El campo debe de ser en formato de correo.</string>
+    <string name="msn_campo_phone">Debe de cumplir de formato de un numero \ntelefono.</string>
+    <string name="msn_campo_coor">Campo obligatorio.</string>
+    <string name="txt_config">Configuraciones</string>
+    <string name="key_pref_enable">pref_enable_click</string>
+    <string name="txt_habilitar_click">Habilitar cliks</string>
+    <string name="key_pref_del_data">pref_delete_data</string>
+    <string name="txt_eliminar_datos">Eliminar datos de la llave</string>
+    <string name="txt_restaurar_datos">Restaurar Datos</string>
+    <string name="key_pref_rest_data">pref_rest_data</string>
+</resources>
