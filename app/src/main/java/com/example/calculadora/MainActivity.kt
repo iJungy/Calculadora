@@ -1,65 +1,188 @@
 package com.example.calculadora
 
-import android.app.SearchManager
 import android.content.Intent
-import android.content.SharedPreferences
-import android.location.SettingInjectorService
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.URLUtil
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
-import androidx.core.net.toUri
-import com.example.calculadora.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
+import kotlin.math.absoluteValue
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPreferences: SharedPreferences
-    private var image: Uri? = null
+    // Variables para realizar cálculos
+    private var num1: Double? = null
+    private var num2: Double? = null
+    private var operator: String = ""
+    private lateinit var txtCounter: TextView
+    private lateinit var txtCounter2: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        updateUI()
-        setupIntent()
-        getUserData()
+        // Inicializar los TextViews
+        txtCounter = findViewById(R.id.txt_counter)
+        txtCounter2 = findViewById(R.id.txt_counter2)
+
+        // Inicializar los botones
+        val btnC: Button = findViewById(R.id.btnC)
+        val btnCA: Button = findViewById(R.id.btnCA)
+        val btnDiv: Button = findViewById(R.id.btndiv)
+        val btn7: Button = findViewById(R.id.btn7)
+        val btn8: Button = findViewById(R.id.btn8)
+        val btn9: Button = findViewById(R.id.btn9)
+        val btnMult: Button = findViewById(R.id.btnmult)
+        val btn4: Button = findViewById(R.id.btn4)
+        val btn5: Button = findViewById(R.id.btn5)
+        val btn6: Button = findViewById(R.id.btn6)
+        val btnRest: Button = findViewById(R.id.btnrest)
+        val btn1: Button = findViewById(R.id.btn1)
+        val btn2: Button = findViewById(R.id.btn2)
+        val btn3: Button = findViewById(R.id.btn3)
+        val btnSum: Button = findViewById(R.id.btnsum)
+        val btnMM: Button = findViewById(R.id.btnmm)
+        val btn0: Button = findViewById(R.id.btn0)
+        val btnDot: Button = findViewById(R.id.btnpun)
+        val btnEqual: Button = findViewById(R.id.btnigual)
+        val btnPor: Button = findViewById(R.id.btnPor)
+
+        // Definir OnClickListener para los botones
+        btnC.setOnClickListener { clear() }
+        btnCA.setOnClickListener { clearone() }
+        btnPor.setOnClickListener { setOperator("%") }
+        btnDiv.setOnClickListener { setOperator("/") }
+        btn7.setOnClickListener { appendNumber("7") }
+        btn8.setOnClickListener { appendNumber("8") }
+        btn9.setOnClickListener { appendNumber("9") }
+        btnMult.setOnClickListener { setOperator("*") }
+        btn4.setOnClickListener { appendNumber("4") }
+        btn5.setOnClickListener { appendNumber("5") }
+        btn6.setOnClickListener { appendNumber("6") }
+        btnRest.setOnClickListener { setOperator("-") }
+        btn1.setOnClickListener { appendNumber("1") }
+        btn2.setOnClickListener { appendNumber("2") }
+        btn3.setOnClickListener { appendNumber("3") }
+        btnSum.setOnClickListener { setOperator("+") }
+        btnMM.setOnClickListener { changeSign() }
+        btn0.setOnClickListener { appendNumber("0") }
+        btnDot.setOnClickListener { appendDecimal() }
+        btnEqual.setOnClickListener { calculate() }
     }
 
 
-    private fun updateUI(
-        name: String = "Curso UV",
-        correo: String = "zs21027321@estudiantes.uv.mx",
-        web: String = "https://www.miuv.com.mx",
-        phone: String = "+522291766421",
-
-        ) {
-
-        binding.profileTvNombre.text = name
-        binding.profileTvCorreo.text = correo
-        binding.profileTvWeb.text = web
-        binding.profileTvPhone.text = phone
-
+    // Método para limpiar los TextViews y las variables
+    private fun clear() {
+        txtCounter.text = "0"
+        txtCounter2.text = "0"
+        num1 = null
+        num2 = null
+        operator = ""
     }
 
-    private fun getUserData(){
-        //image = Uri.parse(sharedPreferences.getString(getString(R.string.k_image),""))
-        var name = sharedPreferences.getString(getString(R.string.k_name),null)
-        var email = sharedPreferences.getString(getString(R.string.k_email),null)
-        var web = sharedPreferences.getString(getString(R.string.k_web),null)
-        var phone = sharedPreferences.getString(getString(R.string.k_phone),null)
-        var lat = sharedPreferences.getString(getString(R.string.k_lat),null)?.toDouble() ?:0.0
-        var lon = sharedPreferences.getString(getString(R.string.k_lon),null)?.toDouble() ?:0.0
+    // Método para limpiar el TextView de ingreso y las variables relacionadas
+    private fun clearone() {
+        txtCounter2.text = "0"
+        num2 = null
+    }
 
-        updateUI(name!!,email!!,web!!,phone!!)
+    // Método para añadir números al TextView de ingreso
+    private fun appendNumber(number: String) {
+        val currentText = txtCounter2.text.toString()
+        if (currentText.length < 10) { // Verificar la longitud del texto actual
+            if (currentText == "0") {
+                txtCounter2.text = number
+            } else {
+                txtCounter2.append(number)
+            }
+        } else {
+            Toast.makeText(this, "Máximo 10 dígitos permitidos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Método para añadir el punto decimal al TextView de ingreso
+    private fun appendDecimal() {
+        val currentText = txtCounter2.text.toString()
+        if (!currentText.contains(".")) {
+            txtCounter2.append(".")
+        }
+    }
+
+    // Método para cambiar el signo del número en el TextView de ingreso
+    private fun changeSign() {
+        val currentText = txtCounter2.text.toString()
+        if (currentText != "0") {
+            val value = currentText.toDouble()
+            txtCounter2.text = (-value).toString()
+        }
+    }
+
+    // Método para establecer el operador y calcular el resultado intermedio
+    private fun setOperator(op: String) {
+        if (num1 == null) {
+            num1 = txtCounter2.text.toString().toDouble()
+        } else {
+            num2 = txtCounter2.text.toString().toDouble()
+            calculateIntermediateResult()
+        }
+        operator = op
+        txtCounter2.text = "0"
+    }
+
+    // Método para calcular el resultado intermedio
+    private fun calculateIntermediateResult() {
+        num2?.let {
+            when (operator) {
+                "+" -> num1 = num1?.plus(it)
+                "-" -> num1 = num1?.minus(it)
+                "*" -> num1 = num1?.times(it)
+                "/" -> num1 = num1?.div(it)
+                "%" -> num1 = num1!! * (num2!! / 100.0)
+            }
+            val formattedResult = formatNumber(num1)
+            txtCounter.text = formattedResult
+            num2 = null
+        }
+    }
+
+    // Método para calcular el porcentaje
+    private fun percentage() {
+        val value = txtCounter2.text.toString().toDouble()
+        if (num1 != null) {
+            val percent = num1!! * (value / 100.0)
+            txtCounter2.text = percent.toString()
+        }
+    }
+
+    // Método para realizar el cálculo final
+    private fun calculate() {
+        num2 = txtCounter2.text.toString().toDouble()
+        calculateIntermediateResult()
+        val formattedResult = formatNumber(num1)
+        txtCounter.text = formattedResult
+        txtCounter2.text = "0"
+        num1 = null
+        num2 = null
+        operator = ""
+    }
+
+    // Método para formatear el número
+    private fun formatNumber(number: Double?): String {
+        return if (number != null) {
+            if (number.absoluteValue >= 100000000) {
+                String.format(Locale.getDefault(), "%.2e", number)
+            } else {
+                val formatter: NumberFormat = DecimalFormat("#,###.########")
+                formatter.format(number)
+            }
+        } else {
+            ""
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,99 +191,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId){
-            R.id.show_perfil->{
-                val intent = Intent(this, EditActivity::class.java)
-
-                intent.putExtra(getString(R.string.k_name), binding.profileTvNombre.text.toString())
-                intent.putExtra(getString(R.string.k_email), binding.profileTvCorreo.text.toString())
-                intent.putExtra(getString(R.string.k_web), binding.profileTvWeb.text.toString())
-                intent.putExtra(getString(R.string.k_phone), binding.profileTvPhone.text.toString())
-                intent.putExtra(getString(R.string.k_image), binding.profileImg.toString().toUri())
-
-
-                editResult.launch(intent)
+        when (item.itemId) {
+            R.id.action_show -> {
+                startActivity(Intent(this, DevData::class.java))
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
-
-    private val editResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-
-                val name = it.data?.getStringExtra(getString(R.string.k_name))
-                val correo = it.data?.getStringExtra(getString(R.string.k_email))
-                val phone = it.data?.getStringExtra(getString(R.string.k_phone))
-                val web = it.data?.getStringExtra(getString(R.string.k_web))
-                image = it.data?.getStringExtra(getString(R.string.k_image))?.toUri()
-
-                binding.profileImg.setImageURI(image)
-                //updateUI(name!!, correo!!, web!!, phone!!)
-                saveUserData(name,correo,phone,web)
-            }
-        }
-
-    private fun saveUserData(name:String?,correo:String?,phone:String?,web:String?){
-        sharedPreferences.edit {
-            putString(getString(R.string.k_image),image.toString())
-            putString(getString(R.string.k_name),name)
-            putString(getString(R.string.k_email),correo)
-            putString(getString(R.string.k_phone),phone)
-            putString(getString(R.string.k_web),web)
-            apply()
-        }
-
-        updateUI(name!!,correo!!,web!!,phone!!)
-    }
-
-    private fun launchintent(intent: Intent) {
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
-        } else {
-            Toast.makeText(this, "No se encontro aplicacion compatible", Toast.LENGTH_SHORT).show()
-        }
-
-    }
-
-
-    private fun setupIntent() {
-        //Buscar por web un texto
-        binding.profileTvNombre.setOnClickListener {
-            val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
-                putExtra(SearchManager.QUERY, binding.profileTvNombre.text)
-            }
-            launchintent(intent)
-        }
-
-        //Envio de correo
-        binding.profileTvCorreo.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto")
-                putExtra(Intent.EXTRA_EMAIL, binding.profileTvCorreo.text.toString())
-                putExtra(Intent.EXTRA_SUBJECT, "AUTOMATIC Intent")
-                putExtra(Intent.EXTRA_TEXT, "SOME text here")
-            }
-            launchintent(intent)
-        }
-
-        //Sitio web
-        binding.profileTvWeb.setOnClickListener {
-            val url = binding.profileTvWeb.text.toString()
-
-            launchintent(intent)
-        }
-
-        //Telefono
-        binding.profileTvPhone.setOnClickListener {
-            val intent = Intent(Intent.ACTION_DIAL).apply {
-                val phone = (it as TextView).text
-                data = Uri.parse("tel: $phone")
-            }
-            launchintent(intent)
-        }
-    }
 }
-

@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditActivity">
+    tools:context=".EditDev">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="@dimen/common_pading">
+        android:padding="@dimen/common_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="@dimen/size_image"
@@ -28,6 +28,7 @@
                     android:id="@+id/profile_img"
                     android:layout_width="@dimen/size_image"
                     android:layout_height="@dimen/size_image"
+                    android:contentDescription="TODO"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_launcher" />
             </androidx.cardview.widget.CardView>
@@ -45,8 +46,8 @@
             android:id="@+id/til_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_pading"
-            android:layout_marginTop="@dimen/common_pading"
+            android:layout_marginHorizontal="@dimen/common_padding"
+            android:layout_marginTop="@dimen/common_padding"
             android:hint="@string/text_nombre">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,45 +61,45 @@
             android:id="@+id/til_corre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_pading"
-            android:layout_marginTop="@dimen/common_pading"
+            android:layout_marginHorizontal="@dimen/common_padding"
+            android:layout_marginTop="@dimen/common_padding"
             android:hint="@string/text_correo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etcorre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"></com.google.android.material.textfield.TextInputEditText>
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_sitioweb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_pading"
-            android:layout_marginTop="@dimen/common_pading"
+            android:layout_marginHorizontal="@dimen/common_padding"
+            android:layout_marginTop="@dimen/common_padding"
             android:hint="@string/text_sitio_web">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etsitioweb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textWebEditText"></com.google.android.material.textfield.TextInputEditText>
+                android:inputType="textWebEditText" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/common_pading"
-            android:layout_marginTop="@dimen/common_pading"
+            android:layout_marginHorizontal="@dimen/common_padding"
+            android:layout_marginTop="@dimen/common_padding"
             android:hint="@string/text_sitio_phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"></com.google.android.material.textfield.TextInputEditText>
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

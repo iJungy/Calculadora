@@ -2,24 +2,22 @@ package com.example.calculadora
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.URLUtil
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
-import com.example.calculadora.databinding.ActivityEditBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.calculadora.databinding.ActivityEditdevBinding
 
-
-
-class EditActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditBinding
+class EditDev : AppCompatActivity() {
+    private lateinit var binding: ActivityEditdevBinding
     private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditBinding.inflate(layoutInflater)
+        binding = ActivityEditdevBinding.inflate(layoutInflater)
+        supportActionBar?.title = "Editar Información"
 
         setContentView(binding.root)
 
@@ -32,10 +30,14 @@ class EditActivity : AppCompatActivity() {
         binding.etsitioweb.setText(intent.extras?.getString(getString(R.string.k_web)))
         binding.etphone.setText(intent.extras?.getString(getString(R.string.k_phone)))
 
+
+
         binding.btnimgchange.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
             }
+
             galleryResult.launch(intent)
         }
 
@@ -69,6 +71,22 @@ class EditActivity : AppCompatActivity() {
 
     }
 
+    private val galleryResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == RESULT_OK ) {
+            imageUri = it.data?.data
+
+
+            val contentResolver=applicationContext.contentResolver
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+            imageUri?.let {
+                contentResolver.takePersistableUriPermission(it, takeFlags)
+            }
+        }
+        binding.profileImg.setImageURI(imageUri)
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_edit, menu)
@@ -84,28 +102,13 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private val galleryResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == RESULT_OK) {
-            imageUri = it.data?.data
-
-            val contentResolver = applicationContext.contentResolver
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-
-            imageUri?.let {
-                contentResolver.takePersistableUriPermission(it,takeFlags)
-            }
-            binding.profileImg.setImageURI(imageUri)
-        }
-    }
-
-
     fun sendData(){
         val intent = Intent()
         intent.putExtra(getString(R.string.k_name),binding.etname.text.toString())
         intent.putExtra(getString(R.string.k_email),binding.etcorre.text.toString())
         intent.putExtra(getString(R.string.k_web),binding.etsitioweb.text.toString())
         intent.putExtra(getString(R.string.k_phone),binding.etphone.text.toString())
+        intent.putExtra(getString(R.string.k_image),imageUri.toString())
 
         setResult(RESULT_OK,intent)
         finish()
@@ -131,6 +134,56 @@ class EditActivity : AppCompatActivity() {
             binding.tilName.error=null
         }
         //Validar Correo
+        if(binding.etcorre.text.isNullOrEmpty() || binding.etcorre.text.toString().trim().isEmpty() ) {
+            binding.tilCorre.run {
+                error = context.getString(R.string.msn_campo_obligatorio)
+                requestFocus()
+            }
+            isValid = false
+        }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etcorre.text).matches()){
+            binding.tilCorre.run {
+                error = context.getString(R.string.msn_campo_obligatorio)
+                requestFocus()
+            }
+            isValid = false
+        }else{
+            binding.tilCorre.error=null
+        }
+        //Validar web
+        if(binding.etsitioweb.text.isNullOrEmpty()|| binding.etsitioweb.text.toString().trim().isEmpty() ) {
+            binding.tilSitioweb.run {
+                error = context.getString(R.string.msn_campo_obligatorio)
+                requestFocus()
+            }
+            isValid = false
+        }else if(!URLUtil.isValidUrl(binding.etsitioweb.text.toString())){
+            binding.tilSitioweb.run {
+                error = context.getString(R.string.msn_campo_web)
+                requestFocus()
+            }
+            isValid = false
+        }else{
+            binding.tilSitioweb.error=null
+        }
+        //Validar telefono
+        if (binding.etphone.text.isNullOrEmpty() || binding.etphone.text.toString().trim().isEmpty()) {
+            binding.tilPhone.run {
+                error = context.getString(R.string.msn_campo_obligatorio)
+                requestFocus()
+            }
+            isValid = false
+        } else if (!binding.etphone.text!!.matches(Regex("\\+\\d{12}"))) {
+            binding.tilPhone.run {
+                error = context.getString(R.string.msn_campo_phone)
+                requestFocus()
+            }
+            isValid = false
+        } else {
+            binding.tilPhone.error = null
+        }
+        return isValid
+
+      //Validar Correo
         if(binding.etcorre.text.isNullOrEmpty() || binding.etcorre.text.toString().trim().isEmpty() ) {
             binding.tilCorre.run {
                 error = context.getString(R.string.msn_campo_obligatorio)
@@ -180,6 +233,5 @@ class EditActivity : AppCompatActivity() {
         }
         return isValid
     }
-
-
 }
+

@@ -30,4 +30,5 @@
     <string name="txt_eliminar_datos">Eliminar datos de la llave</string>
     <string name="txt_restaurar_datos">Restaurar Datos</string>
     <string name="key_pref_rest_data">pref_rest_data</string>
+
 </resources>

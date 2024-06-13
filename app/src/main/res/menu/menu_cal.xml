@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/action_show"
-        android:title=" Desarrollador"
+        android:id="@+id/action_edit"
+        android:title="Editar informacion"
         app:showAsAction="never"
         >
     </item>
-
 
 </menu>

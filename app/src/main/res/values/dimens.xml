@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="button_size">5dp</dimen>
+    <dimen name="btn_txt_size">24sp</dimen>
+    <dimen name="counter_txt_size">64sp</dimen>
     <dimen name="size_image">256dp</dimen>
-    <dimen name="common_pading">16dp</dimen>
+    <dimen name="common_padding">16dp</dimen>
     <dimen name="radio_size_img">128dp</dimen>
     <dimen name="card_elevation">16dp</dimen>
-    <dimen name="common_marging">16dp</dimen>
-    <dimen name="text_size_md">24sp</dimen>
-    <dimen name="text_size_sm">16sp</dimen>
+    <dimen name="common_margin">16dp</dimen>
+    <dimen name="txt_size_md">24sp</dimen>
+    <dimen name="txt_size_sm">16sp</dimen>
     <dimen name="min_margin">8dp</dimen>
 </resources>
