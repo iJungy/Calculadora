@@ -17,7 +17,7 @@ class EditDev : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditdevBinding.inflate(layoutInflater)
-        supportActionBar?.title = "Editar Información"
+        supportActionBar?.title = "\t Edit Profile"
 
         setContentView(binding.root)
 

@@ -38,7 +38,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Calculadora"
         tools:targetApi="31">
-        <activity android:name=".Ydevdata"
+        <activity android:name=".DevData"
             android:exported="false"/>
         <activity android:name=".EditDev"
             android:exported="false"/>

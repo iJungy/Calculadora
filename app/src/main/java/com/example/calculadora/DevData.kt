@@ -29,7 +29,7 @@ class DevData : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        supportActionBar?.title = "Información del Desarrollador"
+        supportActionBar?.title = " Develper Info"
 
         binding = ActivityDevinfoBinding.inflate(layoutInflater)
         val view = binding.root
@@ -39,17 +39,15 @@ class DevData : AppCompatActivity() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         updateUI()
         setupIntent()
-        getUserData();
-
-
+        getUserData()
     }
 
     private fun getUserData() {
-        image = Uri.parse(sharedPreferences.getString(getString(R.string.k_image), ""))
-        var name = sharedPreferences.getString(getString(R.string.k_name), "")
-        var email = sharedPreferences.getString(getString(R.string.k_email), "")
-        var web = sharedPreferences.getString(getString(R.string.k_web), "")
-        var phone = sharedPreferences.getString(getString(R.string.k_phone), "")
+        image = Uri.parse(sharedPreferences.getString(getString(R.string.k_image), null))
+        var name = sharedPreferences.getString(getString(R.string.k_name), null)
+        var email = sharedPreferences.getString(getString(R.string.k_email), null)
+        var web = sharedPreferences.getString(getString(R.string.k_web), null)
+        var phone = sharedPreferences.getString(getString(R.string.k_phone), null)
 
         updateUI(name!!, email!!, web!!, phone!!)
     }
@@ -57,9 +55,9 @@ class DevData : AppCompatActivity() {
 
     private fun updateUI(
         name: String = "Curso UV",
-        correo: String = "zs21027321@estudiantes.uv.mx",
+        correo: String = "zs21020216@estudiantes.uv.mx",
         web: String = "https://www.miuv.com.mx",
-        phone: String = "+522291766421",
+        phone: String = "+522293935090",
 
         ) {
 
